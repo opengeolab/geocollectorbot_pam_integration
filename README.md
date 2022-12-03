@@ -3,11 +3,9 @@
 <img
 src="https://raw.githubusercontent.com/opengeolab/geocollectorbot_pam_integration/main/docs/img/insubri_parks_logo.png"
 alt="logo"
-width="120"
-height="120"
 />
 
-# Geo Collector Bot <> PAM
+# Geo Collector Bot <> PAM integration
 
 </div>
 
