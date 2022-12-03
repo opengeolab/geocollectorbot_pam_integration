@@ -1,0 +1,91 @@
+version: '3.8'
+
+networks:
+  insubriparks-network:
+    name: insubriparks_network
+    driver: bridge
+
+services:
+  postgres:
+    container_name: insubriparks_database
+    hostname: ${pg_hostname}
+    image: insubriparks_database:1.0.0
+    build:
+      context: ./postgresql
+      dockerfile: Dockerfile
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "root" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    restart: always
+    environment:
+      - POSTGRES_USER=${pg_username}
+      - POSTGRES_PASSWORD=${pg_password}
+      - APP_DB_NAME=${app_database}
+      - APP_DB_USER=${app_username}
+      - APP_DB_PASS=${app_password}
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    networks:
+      - insubriparks-network
+
+  payara:
+    container_name: insubriparks_dashboard
+    image: insubriparks_dashboard:1.0.0
+    build:
+      context: ./payara
+      dockerfile: Dockerfile
+    environment:
+      PG_HOST: ${pg_hostname}
+      PG_PORT: ${pg_port}
+      PG_DB: ${app_database}
+      PG_USR: ${app_username}
+      PG_PWD: ${app_password}
+      DATA_DIR: ${data_dir}
+      API_URL: ${api_url}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./uploads:${data_dir}/uploads
+    networks:
+      - insubriparks-network
+
+  bot:
+    container_name: bot_server
+    image: geolabpolimi/geo-collector-bot
+    environment:
+      PG_HOST: ${pg_hostname}
+      PG_PORT: ${pg_port}
+      PG_DB: ${app_database}
+      PG_USR: ${app_username}
+      PG_PWD: ${app_password}
+      LOG_LEVEL: ${bot_log_level}
+      PORT: ${bot_internal_port}
+      TELEGRAM_AUTH_TOKEN: ${bot_telegram_auth_token}
+      UPDATE_MODE: ${bot_update_mode}
+      PUBLIC_URL: ${bot_public_url}
+      GET_MEDIA_BASE_PATH: ${bot_get_media_base_path}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./bot/config.json:/home/node/config.json
+      - ./bot/locales:/home/node/custom_locales
+      - ./uploads:/home/node/media
+    networks:
+      - insubriparks-network
+
+  nginx:
+    container_name: insubriparks_nginx
+    image: nginx:1.23.1
+    depends_on:
+      - payara
+      - bot
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - insubriparks-network

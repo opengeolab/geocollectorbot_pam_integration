@@ -1,0 +1,94 @@
+{
+  "$schema": "https://raw.githubusercontent.com/opengeolab/geocollectorbot/main/src/schemas/config.schema.json",
+  "flow": {
+    "firstStepId": "site_of_interest",
+    "steps": [
+      {
+        "id": "site_of_interest",
+        "question": {
+          "en": "Which park are you in?",
+          "it": "In quale parco ti trovi?"
+        },
+        "config": {
+          "type": "multipleChoice",
+          "options": [
+            [
+              {
+                "text": "Parco Spina Verde",
+                "value": "parco_spina_verde"
+              },
+              {
+                "text": "Parco Pineta",
+                "value": "parco_pineta"
+              }
+            ],
+            [
+              {
+                "text": "Parco Campo dei Fiori",
+                "value": "parco_campo_dei_fiori"
+              },
+              {
+                "text": "Parco Gole della Breggia",
+                "value": "parco_gole_della_breggia"
+              }
+            ],
+            [
+              {
+                "text": "Parco del Penz",
+                "value": "parco_del_penz"
+              }
+            ]
+          ]
+        },
+        "nextStepId": "description"
+      },
+      {
+        "id": "description",
+        "question": {
+          "en": "Provide a brief text description for your report",
+          "it": "Fornisci una breve descrizione testuale per la tua segnalazione"
+        },
+        "config": {
+          "type": "text"
+        },
+        "nextStepId": "location"
+      },
+      {
+        "id": "location",
+        "question": {
+          "en": "Share your location",
+          "it": "Condividi la tua posizione"
+        },
+        "config": {
+          "type": "location"
+        },
+        "nextStepId": "media"
+      },
+      {
+        "id": "media",
+        "question": {
+          "en": "Share a photo of the event you wish to report",
+          "it": "Condividi una foto dell’evento che vuoi segnalare"
+        },
+        "config": {
+          "type": "singleMedia",
+          "acceptOnly": "photo"
+        }
+      }
+    ]
+  },
+  "dataStorage": {
+    "type": "postgres",
+    "configuration": {
+      "connectionString": "postgresql://{{PG_USR}}:{{PG_PWD}}@{{PG_HOST}}:{{PG_PORT}}/{{PG_DB}}",
+      "interactionsTable": "interactions",
+      "ssl": false
+    }
+  },
+  "mediaStorage": {
+    "type": "fileSystem",
+    "configuration": {
+      "folderPath": "/home/node/media"
+    }
+  }
+}

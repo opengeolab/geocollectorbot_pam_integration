@@ -1,0 +1,56 @@
+commands:
+    start: |
+      Hello from Insubriparks Geo Collector Bot\!
+      Start collecting data with the */collect* command
+
+    help: |
+      This Bot is designed for collecting data through a flow of questions\.
+
+      The commands you have at your disposal are:
+      \- */collect* to activate a new report collection
+      \- */abort* to cancel an ongoing report collection
+
+events:
+    callbackQueryOptionSelected: "You selected: *{{selectedText}}*"
+
+    interactionCompleted: Thank you, your report has been registered correctly\!
+
+    interactionAborted: |
+      Your current report has been canceled correctly\.
+      Start a new one with the */collect* command
+
+keyboards:
+    location: Send my current location
+
+errors:
+    unknown: Ops, something went wrong on our hand\. Please, try again later
+
+    chatIdNotFound: Sorry, I couldn't recognize this chat
+
+    ongoingInteractionAlreadyExists: |
+      It seems you already have an ongoing report\.
+      Please, complete it or cancel it with the */abort* command
+
+    retrieveInteraction: We are experiencing problems retrieving your data\. Please, try again later
+
+    createInteraction: We are experiencing problems persisting you data\. Please, try again later
+
+    abortInteraction: We are experiencing problems canceling your current interaction\. Please, try again later
+
+    updateInteraction: We are experiencing problems saving your answer\. Please, try again later
+
+    noInteractionsFound: It seems you don't have any ongoing report\. Start one with the */collect* command
+
+    tooManyInteractionsFound: It seems you have multiple ongoing reports
+
+    unknownStep: Sorry, I couldn't determine the state of your report
+
+    wrongStepType: The answer you have provided is not suitable for the question\. Please, try again
+
+    wrongMediaType: "This question only accepts {{acceptedMediaType}} messages\\. Please, try again"
+
+    unknownOption: The answer you have selected is not valid\. Please, try again
+
+    savingMedia: We could not save your media\. Please, try again
+
+    unsupportedUpdateType: Sorry, we currently do not support this type of messages\. Please, try again
