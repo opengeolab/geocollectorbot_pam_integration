@@ -54,7 +54,7 @@ services:
 
   bot:
     container_name: bot_server
-    image: geolabpolimi/geo-collector-bot
+    image: geolabpolimi/geo-collector-bot:latest
     environment:
       PG_HOST: ${pg_hostname}
       PG_PORT: ${pg_port}
@@ -74,6 +74,22 @@ services:
       - ./bot/config.json:/home/node/config.json
       - ./bot/locales:/home/node/custom_locales
       - ./uploads:/home/node/media
+    networks:
+      - insubriparks-network
+
+  bot-pam-middleware:
+    container_name: bot_pam_middleware
+    image: geo-collector-bot-pam-middleware
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    environment:
+      LOG_LEVEL: ${bot_pam_middleware_log_level}
+      PORT: ${bot_pam_middleware_internal_port}
+      BOT_BASE_URL: ${api_url}
+      PAM_BASE_URL: ${bot_pam_middleware_pam_base_url}
+    depends_on:
+      - bot
     networks:
       - insubriparks-network
 

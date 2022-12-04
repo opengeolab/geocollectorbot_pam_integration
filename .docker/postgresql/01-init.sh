@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 export PGPASSWORD=$POSTGRES_PASSWORD;
+echo "Here!!!"
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
   CREATE DATABASE $APP_DB_NAME;
   \connect $APP_DB_NAME $POSTGRES_USER
@@ -20,6 +21,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
       interaction_state character varying,
       created_at timestamp with time zone,
       updated_at timestamp with time zone,
+      title character varying,
       description character varying,
       location geometry(Point,4326),
       site_of_interest character varying,

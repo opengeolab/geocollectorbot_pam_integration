@@ -54,3 +54,5 @@ errors:
   savingMedia: Non siamo riusciti a salvare il tuo allegato\. Riprova
 
   unsupportedUpdateType: Mi dispiace, al momento non supportiamo questo tipo di messaggi\. Riprova
+
+  stepCannotBeSkipped: Questa domanda non può essere saltata

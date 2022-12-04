@@ -40,6 +40,17 @@
             ]
           ]
         },
+        "nextStepId": "title"
+      },
+      {
+        "id": "title",
+        "question": {
+          "en": "Provide a title for your report",
+          "it": "Fornisci un titolo per la tua segnalazione"
+        },
+        "config": {
+          "type": "text"
+        },
         "nextStepId": "description"
       },
       {
@@ -89,6 +100,12 @@
     "type": "fileSystem",
     "configuration": {
       "folderPath": "/home/node/media"
+    }
+  },
+  "hooks": {
+    "onComplete": {
+      "type": "http-post",
+      "url": "http://bot_pam_middleware:8080/send-note-to-pam"
     }
   }
 }
