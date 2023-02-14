@@ -67,7 +67,7 @@ services:
       UPDATE_MODE: ${bot_update_mode}
       PUBLIC_URL: ${bot_public_url}
       GET_MEDIA_BASE_PATH: ${bot_get_media_base_path}
-    restart: always
+    restart: on-failure
     depends_on:
       postgres:
         condition: service_healthy
