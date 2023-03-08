@@ -67,6 +67,7 @@ services:
       UPDATE_MODE: ${bot_update_mode}
       PUBLIC_URL: ${bot_public_url}
       GET_MEDIA_BASE_PATH: ${bot_get_media_base_path}
+      CUSTOM_TRANSLATIONS_FOLDER_PATH: /home/node/custom_locales
     restart: on-failure
     depends_on:
       postgres:
