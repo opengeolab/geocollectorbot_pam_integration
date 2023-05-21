@@ -8,9 +8,19 @@ const bodySchema = {
     id: { type: 'string' },
     location: { type: 'string' },
     media: { items: { type: 'string' }, type: 'array' },
+    site_of_interest: {
+      enum: [
+        'spina-verde',
+        'pineta',
+        'fiori',
+        'breggia',
+        'penz',
+      ],
+      type: 'string',
+    },
     title: { type: 'string' },
   },
-  required: ['chatId', 'id', 'title'],
+  required: ['chatId', 'id', 'title', 'site_of_interest'],
   type: 'object',
 } as const
 

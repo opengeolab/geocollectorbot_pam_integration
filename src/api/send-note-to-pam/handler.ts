@@ -30,11 +30,12 @@ interface PostNoteBody {
 
 const uploadImage = async (
   service: FastifyInstance,
+  url: string,
   photoUrl?: string
 ): Promise<PostUploadNoteResponse['minio_file'] | undefined> => {
   if (!photoUrl) { return }
 
-  const { env: { BOT_BASE_URL, PAM_BASE_URL }, log } = service
+  const { env: { BOT_BASE_URL }, log } = service
 
   const { status: getPhotoStatus, data: photo } = await axios.get<ReadableStream>(
     `${BOT_BASE_URL}${photoUrl}`,
@@ -50,7 +51,7 @@ const uploadImage = async (
   form.append('uploaded_file', photo, photoUrl.split('/').pop())
 
   const { status: uploadStatus, data: uploadResponse } = await axios.post<PostUploadNoteResponse>(
-    `${PAM_BASE_URL}/upload/note/`,
+    `${url}/upload/note/`,
     form,
     { headers: { ...form.getHeaders() } }
   )
@@ -85,9 +86,11 @@ const handler: RouteHandlerMethod<
 
   log.debug({ body }, 'POST - /send-note-to-pam')
 
+  const url = `${PAM_BASE_URL}/${body.site_of_interest}/noteapi`
+
   let imageData: PostUploadNoteResponse['minio_file'] | undefined
   try {
-    imageData = await uploadImage(this, body.media?.[0])
+    imageData = await uploadImage(this, url, body.media?.[0])
   } catch (err) {
     log.error({ err }, 'Error uploading image to PAM bucket')
   }
@@ -101,7 +104,7 @@ const handler: RouteHandlerMethod<
   }
 
   try {
-    const { status, data } = await axios.post<{ detail?: object }>(`${PAM_BASE_URL}/note`, postNoteBody)
+    const { status, data } = await axios.post<{ detail?: object }>(`${url}/note`, postNoteBody)
     if (status !== 200) {
       log.error({ detail: data.detail, postNoteBody, status }, 'PAM error while uploading note')
       throw new Error(`PAM /note responded with status code ${status}`)

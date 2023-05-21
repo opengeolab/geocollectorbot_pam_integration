@@ -1,5 +1,7 @@
 version: '3.8'
 
+name: geocollectorbot
+
 networks:
   insubriparks-network:
     name: insubriparks_network

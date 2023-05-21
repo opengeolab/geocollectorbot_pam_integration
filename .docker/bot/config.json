@@ -15,27 +15,27 @@
             [
               {
                 "text": "Parco Spina Verde",
-                "value": "Parco Spina Verde"
+                "value": "spina-verde"
               },
               {
                 "text": "Parco Pineta",
-                "value": "Parco Pineta"
+                "value": "pineta"
               }
             ],
             [
               {
                 "text": "Parco Campo dei Fiori",
-                "value": "Parco Campo dei Fiori"
+                "value": "fiori"
               },
               {
                 "text": "Parco Gole della Breggia",
-                "value": "Parco delle Gole della Breggia"
+                "value": "breggia"
               }
             ],
             [
               {
                 "text": "Parco del Penz",
-                "value": "Parco del Penz"
+                "value": "penz"
               }
             ]
           ]
