@@ -34,7 +34,7 @@ services:
 
   bot:
     container_name: bot_server
-    image: geolabpolimi/geo-collector-bot:1.1.1
+    image: geolabpolimi/geo-collector-bot:1.1.2
     environment:
       PG_HOST: ${pg_hostname}
       PG_PORT: ${pg_port}
@@ -61,7 +61,7 @@ services:
 
   bot-pam-middleware:
     container_name: bot_pam_middleware
-    image: geo-collector-bot-pam-middleware
+    image: geo-collector-bot-pam-middleware:1.0.0
     build:
       context: ..
       dockerfile: Dockerfile

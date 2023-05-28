@@ -86,7 +86,7 @@ const handler: RouteHandlerMethod<
 
   log.debug({ body }, 'POST - /send-note-to-pam')
 
-  const url = `${PAM_BASE_URL}/${body.site_of_interest}/noteapi`
+  const url = `${PAM_BASE_URL}/pam-${body.site_of_interest}/noteapi`
 
   let imageData: PostUploadNoteResponse['minio_file'] | undefined
   try {
