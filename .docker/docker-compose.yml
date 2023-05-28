@@ -1,5 +1,7 @@
 version: '3.8'
 
+name: geocollectorbot
+
 networks:
   insubriparks-network:
     name: insubriparks_network
@@ -30,31 +32,9 @@ services:
     networks:
       - insubriparks-network
 
-  payara:
-    container_name: insubriparks_dashboard
-    image: insubriparks_dashboard:1.0.0
-    build:
-      context: ./payara
-      dockerfile: Dockerfile
-    environment:
-      PG_HOST: ${pg_hostname}
-      PG_PORT: ${pg_port}
-      PG_DB: ${app_database}
-      PG_USR: ${app_username}
-      PG_PWD: ${app_password}
-      DATA_DIR: ${data_dir}
-      API_URL: ${api_url}
-    depends_on:
-      postgres:
-        condition: service_healthy
-    volumes:
-      - ./uploads:${data_dir}/uploads
-    networks:
-      - insubriparks-network
-
   bot:
     container_name: bot_server
-    image: geolabpolimi/geo-collector-bot:latest
+    image: geolabpolimi/geo-collector-bot:1.1.2
     environment:
       PG_HOST: ${pg_hostname}
       PG_PORT: ${pg_port}
@@ -81,7 +61,7 @@ services:
 
   bot-pam-middleware:
     container_name: bot_pam_middleware
-    image: geo-collector-bot-pam-middleware
+    image: geo-collector-bot-pam-middleware:1.0.0
     build:
       context: ..
       dockerfile: Dockerfile
@@ -92,18 +72,5 @@ services:
       PAM_BASE_URL: ${bot_pam_middleware_pam_base_url}
     depends_on:
       - bot
-    networks:
-      - insubriparks-network
-
-  nginx:
-    container_name: insubriparks_nginx
-    image: nginx:1.23.1
-    depends_on:
-      - payara
-      - bot
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
       - insubriparks-network
